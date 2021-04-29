@@ -19,6 +19,7 @@ contexts:
     - include: rubylines
     - include: continuations
     - include: text-interpolations
+    - include: filters
 
 ###[ COMMENTS ]###############################################################
 
@@ -234,3 +235,74 @@ contexts:
       scope: punctuation.section.parens.end.haml
       pop: 1
     - include: HTML (for HAML).sublime-syntax#tag-attributes
+
+###[ FILTERS ]##########################################################
+
+  filters:
+    # https://github.com/haml/haml/blob/main/lib/haml/filters.rb
+    # Missing are currently: plain, Escaped, preserve, CDATA,  LESS
+    - match: ^(\s*):(ruby)$
+      captures:
+        2: constant.language.name.ruby.filter.haml
+      push:
+        - meta_scope: text.ruby.filter.haml
+        - match: ^(?!(\1\s)|\s*$)
+          pop: true
+        - include: scope:source.ruby
+    - match: ^(\s*):(javascript)$
+      captures:
+        2: constant.language.name.javascript.filter.haml
+      push:
+        - meta_scope: source.js.filter.haml
+        - match: ^(?!(\1\s)|\s*$)
+          pop: true
+        - include: scope:source.js
+    - match: ^(\s*):(coffee)$
+      captures:
+        2: constant.language.name.coffeescript.filter.haml
+      push:
+        - meta_scope: text.coffeescript.filter.haml
+        - match: ^(?!(\1\s)|\s*$)
+          pop: true
+        - include: scope:source.coffee
+    - match: ^(\s*):(css)$
+      captures:
+        2: constant.language.name.css.filter.haml
+      push:
+        - meta_scope: text.css.filter.haml
+        - match: ^(?!(\1\s)|\s*$)
+          pop: true
+        - include: scope:source.css
+    - match: ^(\s*):(sass)$
+      captures:
+        2: constant.language.name.sass.filter.haml
+      push:
+        - meta_scope: text.sass.filter.haml
+        - match: ^(?!(\1\s)|\s*$)
+          pop: true
+        - include: scope:source.sass
+    - match: ^(\s*):(scss)$
+      captures:
+        2: constant.language.name.scss.filter.haml
+      push:
+        - meta_scope: text.scss.filter.haml
+        - match: ^(?!(\1\s)|\s*$)
+          pop: true
+        - include: scope:source.scss
+    - match: ^(\s*):(markdown)$
+      captures:
+        2: constant.language.name.markdown.filter.haml
+      push:
+        - meta_scope: text.markdown.filter.haml
+        - match: ^(?!(\1\s)|\s*$)
+          pop: true
+        - include: scope:text.html.markdown
+    - match: ^(\s*):(erb)$
+      captures:
+        2: constant.language.name.erb.filter.haml
+      push:
+        - meta_scope: text.erb.filter.haml
+        - match: ^(?!(\1\s)|\s*$)
+          pop: true
+        # XXX: in oder versions: scope:html.ruby
+        - include: scope:text.html.rails
